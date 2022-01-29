@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "863358096638",
+    "project_id": "instagram-clone-7d7ae",
+    "storage_bucket": "instagram-clone-7d7ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863358096638:android:b805503cbab19debbc41af",
+        "android_client_info": {
+          "package_name": "com.nerdyapproach.instagram_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863358096638-idq9m8gikdigk9isiqhotgjv5291enmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALFkfuHngtlsx6baYJLsCpC2tQrM7kr28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863358096638-idq9m8gikdigk9isiqhotgjv5291enmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
