@@ -3,23 +3,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/text_input_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +39,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
               // email input
               TextFieldInput(
+                textEditingController: _usernameController,
+                hintText: "Username",
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFieldInput(
                 textEditingController: _emailController,
                 hintText: "Enter Email",
                 textInputType: TextInputType.emailAddress,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFieldInput(
+                textEditingController: _bioController,
+                hintText: "Compose Bio",
+                textInputType: TextInputType.text,
               ),
               const SizedBox(
                 height: 20,
@@ -56,15 +69,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: true,
                 textInputType: TextInputType.visiblePassword,
               ),
-              const SizedBox(
-                height: 20,
+              const SizedBox(height: 20),
+              TextFieldInput(
+                textEditingController: _confirmPasswordController,
+                hintText: "Confirm Password",
+                isPassword: true,
+                textInputType: TextInputType.visiblePassword,
               ),
-
+              const SizedBox(height: 20),
               // login button
               InkWell(
                 child: Container(
                   width: double.infinity,
-                  // height: 40,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
@@ -72,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4))),
                   ),
-                  child: const Text("Login"),
+                  child: const Text("Signup"),
                 ),
               ),
               Flexible(child: Container(), flex: 2),
@@ -80,14 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text("Don't have an account? "),
+                    child: const Text("Already have an account? "),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   GestureDetector(
                     onTap: () {},
                     child: Container(
                       child: const Text(
-                        "Signup.",
+                        "Login.",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 8),
