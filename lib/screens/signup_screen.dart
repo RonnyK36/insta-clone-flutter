@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/services/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/pick_image.dart';
 import 'package:instagram_clone/widgets/text_input_field.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -18,6 +22,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  Uint8List? _image;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _bioController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void getProfilePicture() async {
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,16 +62,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 60),
                 Stack(
                   children: [
-                    const CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(
-                          "https://avatars.githubusercontent.com/u/77696744?v=4"),
-                    ),
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 60, backgroundImage: MemoryImage(_image!))
+                        : const CircleAvatar(
+                            radius: 60,
+                            backgroundImage:
+                                AssetImage("assets/images/default_profile.jpg"),
+                          ),
                     Positioned(
                         bottom: -10,
                         left: 80,
                         child: IconButton(
-                            onPressed: () {}, icon: Icon(Icons.add_a_photo)))
+                            onPressed: getProfilePicture,
+                            icon: Icon(Icons.add_a_photo)))
                   ],
                 ),
                 const SizedBox(height: 20),
