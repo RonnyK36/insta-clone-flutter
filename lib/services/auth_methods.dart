@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/services/storage_methods.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,7 +15,7 @@ class Auth {
     required String bio,
     required String email,
     required String password,
-    // required Uint8List file,
+    required Uint8List file,
   }) async {
     String result = "Some error occured while creating your account";
     try {
@@ -27,6 +28,8 @@ class Auth {
             email: email, password: password);
 
         print(credential.user!.uid);
+        String photoUrl =
+            await Storage().uploadProfile("profilePics", file, false);
         //  Save user to DB
         _firebaseFirestore.collection("users").doc(credential.user!.uid).set({
           "uid": credential.user!.uid,
@@ -35,6 +38,7 @@ class Auth {
           "bio": bio,
           "following": [],
           "followers": [],
+          "photoUrl": photoUrl,
         });
         result = "Successfully created user";
       }
