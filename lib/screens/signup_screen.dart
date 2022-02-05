@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/screens/wrapper.dart';
 import 'package:instagram_clone/services/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/pick_image.dart';
@@ -61,6 +62,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _isLoading = false;
       });
       if (result != "success") {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AuthenticationScreen()));
         showSnackbar(content: result, context: context);
       } else {
         showSnackbar(

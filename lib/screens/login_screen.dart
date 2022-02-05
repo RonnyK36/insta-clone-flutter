@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/screens/signup_screen.dart';
+import 'package:instagram_clone/screens/wrapper.dart';
 import 'package:instagram_clone/services/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/snackbar.dart';
@@ -37,6 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
     if (result == "success") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const AuthenticationScreen()));
       showSnackbar(content: "Login was successful!", context: context);
     } else {
       showSnackbar(content: result, context: context);
