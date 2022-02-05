@@ -40,10 +40,43 @@ class Auth {
           "followers": [],
           "photoUrl": photoUrl,
         });
-        result = "Successfully created user";
+        result = "success";
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "invalid-email") {
+        result = "Check your email";
+      } else if (error.code == "weak-password") {
+        result = "Password should be atleast 6 characters.";
       }
     } catch (error) {
       result = error.toString();
+    }
+    return result;
+  }
+
+  Future<String> login(
+      {required String email, required String password}) async {
+    String result = "Error occured login you in!";
+
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        result = "success";
+      } else {
+        result = "Please provide email and password!";
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "user-not-found") {
+        result = "The account $email does not exist!";
+      } else if (error.code == "wrong-password") {
+        result = "You have entered a wrong password!";
+      }
+    } catch (error) {
+      result = error.toString();
+      print(error.toString());
     }
     return result;
   }

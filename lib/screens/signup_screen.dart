@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/services/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/pick_image.dart';
+import 'package:instagram_clone/utils/snackbar.dart';
 import 'package:instagram_clone/widgets/text_input_field.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -39,6 +42,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _image = image;
     });
+  }
+
+  void createUser() async {
+    if (_image != null) {
+      setState(() {
+        _isLoading = true;
+      });
+      String result = await Auth().createUser(
+        username: _usernameController.text,
+        bio: _bioController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        file: _image!,
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+      if (result != "success") {
+        showSnackbar(content: result, context: context);
+      } else {
+        showSnackbar(
+          content: "Account was created successfully",
+          context: context,
+        );
+      }
+    } else {
+      showSnackbar(content: "Please select an image", context: context);
+    }
   }
 
   @override
@@ -75,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         left: 80,
                         child: IconButton(
                             onPressed: getProfilePicture,
-                            icon: Icon(Icons.add_a_photo)))
+                            icon: const Icon(Icons.add_a_photo)))
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -122,16 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 20),
                 // login button
                 InkWell(
-                  onTap: () async {
-                    String result = await Auth().createUser(
-                      username: _usernameController.text,
-                      bio: _bioController.text,
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                      file: _image!,
-                    );
-                    print(result);
-                  },
+                  onTap: createUser,
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
@@ -141,10 +164,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                     ),
-                    child: const Text("Signup"),
+                    child: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text("Signup"),
                   ),
                 ),
                 // Flexible(child: Container(), flex: 2),
+                const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -153,7 +183,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen())),
                       child: Container(
                         child: const Text(
                           "Login.",
